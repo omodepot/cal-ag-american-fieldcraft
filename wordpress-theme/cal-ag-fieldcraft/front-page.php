@@ -24,6 +24,18 @@ $document = str_replace(
 	$document
 );
 
+$document = str_replace(
+	'https://cal-ag-fieldcraft-review-7m4k2.info249216.chatgpt.site/assets/',
+	esc_url( get_template_directory_uri() . '/assets/' ),
+	$document
+);
+
+$document = str_replace(
+	'href="index.html"',
+	'href="' . esc_url( home_url( '/' ) ) . '"',
+	$document
+);
+
 ob_start();
 wp_head();
 $head_markup = ob_get_clean();
