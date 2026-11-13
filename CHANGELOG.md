@@ -5,6 +5,11 @@ All notable changes to the CAL-AG American Fieldcraft theme. Versions follow
 
 ## [Unreleased]
 
+### Changed
+- Homepage sections are now an editable WordPress page (Pages > Home), created
+  automatically from the approved design and set as the front page. Header,
+  footer and rendered output are unchanged (verified byte-identical on staging).
+
 ### Fixed
 - Theme images and logo bundled in `assets/` (byte-identical to the review
   site's files) instead of loading from the external chatgpt.site preview.
