@@ -1,0 +1,52 @@
+name: Package theme release
+
+# On a version tag (vX.Y.Z) pushed from main, builds an installable theme zip
+# and attaches it to a GitHub Release. This does NOT deploy anywhere.
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: write
+
+env:
+  THEME_DIR: wordpress-theme/cal-ag-fieldcraft
+  THEME_SLUG: cal-ag-fieldcraft
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tag must be on main
+        run: |
+          git fetch origin main --depth=200
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main \
+            || { echo "::error::Tag $GITHUB_REF_NAME is not on main"; exit 1; }
+
+      - name: Repo hygiene check
+        run: bash scripts/check-repo-hygiene.sh
+
+      - name: Tag must match theme Version header
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          ver=$(grep -iE '^\s*\*?\s*Version:' "$THEME_DIR/style.css" | head -1 | sed -E 's/.*Version:\s*//I' | tr -d '[:space:]')
+          [ "$tag" = "$ver" ] || { echo "::error::Tag v$tag does not match style.css Version $ver"; exit 1; }
+
+      - name: Build zip
+        run: |
+          mkdir -p dist
+          (cd "$(dirname "$THEME_DIR")" && zip -r "$GITHUB_WORKSPACE/dist/$THEME_SLUG-$GITHUB_REF_NAME.zip" "$THEME_SLUG" \
+            -x '*.DS_Store' '*.log' '*/.git*' '*/node_modules/*' '*.env*' '*.sql*')
+          (cd dist && sha256sum *.zip > SHA256SUMS.txt)
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.zip dist/SHA256SUMS.txt \
+            --title "$GITHUB_REF_NAME" --generate-notes --verify-tag

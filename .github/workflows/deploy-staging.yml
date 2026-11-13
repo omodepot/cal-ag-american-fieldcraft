@@ -1,0 +1,122 @@
+name: Deploy theme to DreamHost staging
+
+# Deploys ONLY the custom theme folder to the DreamHost STAGING site.
+# - Never touches WordPress core, plugins, uploads, wp-config.php or the database.
+# - Never deploys to production (cal-ag.com). There is intentionally no
+#   production workflow; production releases follow docs/DEPLOYMENT.md.
+# - Does nothing until the required secrets exist in the "staging" environment.
+
+on:
+  push:
+    branches: [staging]
+    paths:
+      - "wordpress-theme/cal-ag-fieldcraft/**"
+      - ".github/workflows/deploy-staging.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+env:
+  THEME_DIR: wordpress-theme/cal-ag-fieldcraft
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Repo hygiene check
+        run: bash scripts/check-repo-hygiene.sh
+
+      - name: Verify required secrets are configured
+        env:
+          SSH_HOST: ${{ secrets.DREAMHOST_SSH_HOST }}
+          SSH_USER: ${{ secrets.DREAMHOST_SSH_USER }}
+          SSH_KEY: ${{ secrets.DREAMHOST_SSH_PRIVATE_KEY }}
+          KNOWN_HOSTS: ${{ secrets.DREAMHOST_SSH_KNOWN_HOSTS }}
+          THEME_PATH: ${{ secrets.DREAMHOST_STAGING_THEME_PATH }}
+        run: |
+          missing=0
+          for v in SSH_HOST SSH_USER SSH_KEY KNOWN_HOSTS THEME_PATH; do
+            if [ -z "${!v}" ]; then echo "::error::Missing secret for $v (see docs/DEPLOYMENT.md)"; missing=1; fi
+          done
+          [ "$missing" -eq 0 ] || exit 1
+
+      - name: Guard against production targets
+        env:
+          THEME_PATH: ${{ secrets.DREAMHOST_STAGING_THEME_PATH }}
+        run: |
+          # Target must be the theme folder of a staging site, never cal-ag.com.
+          case "$THEME_PATH" in
+            */wp-content/themes/cal-ag-fieldcraft) ;;
+            *) echo "::error::Target must end in /wp-content/themes/cal-ag-fieldcraft"; exit 1 ;;
+          esac
+          if ! echo "$THEME_PATH" | grep -qi "staging"; then
+            echo "::error::Target path does not look like a staging site (must contain 'staging')"; exit 1
+          fi
+          if echo "$THEME_PATH" | grep -qiE '/(www\.)?cal-ag\.com/'; then
+            echo "::error::Refusing to deploy to the production cal-ag.com directory"; exit 1
+          fi
+
+      - name: Verify theme source exists
+        run: |
+          test -f "$THEME_DIR/style.css" || { echo "::error::$THEME_DIR/style.css not found"; exit 1; }
+          grep -qi "Theme Name:" "$THEME_DIR/style.css" || { echo "::error::style.css has no Theme Name header"; exit 1; }
+
+      - name: Configure SSH
+        env:
+          SSH_KEY: ${{ secrets.DREAMHOST_SSH_PRIVATE_KEY }}
+          KNOWN_HOSTS: ${{ secrets.DREAMHOST_SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          # Pinned host key: no ssh-keyscan / trust-on-first-use.
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Back up current staging theme on the server
+        env:
+          SSH_HOST: ${{ secrets.DREAMHOST_SSH_HOST }}
+          SSH_USER: ${{ secrets.DREAMHOST_SSH_USER }}
+          THEME_PATH: ${{ secrets.DREAMHOST_STAGING_THEME_PATH }}
+        run: |
+          stamp=$(date -u +%Y%m%dT%H%M%SZ)
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" \
+            "set -e; mkdir -p ~/theme-backups/staging; \
+             if [ -d '$THEME_PATH' ]; then tar -czf ~/theme-backups/staging/cal-ag-fieldcraft-$stamp-pre-${GITHUB_SHA::7}.tar.gz -C \"\$(dirname '$THEME_PATH')\" cal-ag-fieldcraft; fi; \
+             ls -1t ~/theme-backups/staging/*.tar.gz 2>/dev/null | tail -n +11 | xargs -r rm -f"
+
+      - name: Sync theme to staging
+        env:
+          SSH_HOST: ${{ secrets.DREAMHOST_SSH_HOST }}
+          SSH_USER: ${{ secrets.DREAMHOST_SSH_USER }}
+          THEME_PATH: ${{ secrets.DREAMHOST_STAGING_THEME_PATH }}
+        run: |
+          rsync -rlptvz --delete \
+            --exclude='.git*' --exclude='.DS_Store' --exclude='*.log' \
+            --exclude='node_modules/' --exclude='.env*' --exclude='*.sql*' \
+            -e "ssh -i $HOME/.ssh/deploy_key -o StrictHostKeyChecking=yes" \
+            "$THEME_DIR/" "$SSH_USER@$SSH_HOST:$THEME_PATH/"
+
+      - name: Record deployed revision
+        env:
+          SSH_HOST: ${{ secrets.DREAMHOST_SSH_HOST }}
+          SSH_USER: ${{ secrets.DREAMHOST_SSH_USER }}
+          THEME_PATH: ${{ secrets.DREAMHOST_STAGING_THEME_PATH }}
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes "$SSH_USER@$SSH_HOST" \
+            "echo '${GITHUB_SHA} deployed $(date -u +%FT%TZ) by ${GITHUB_ACTOR}' >> ~/theme-backups/staging/DEPLOY_LOG.txt"
+          echo "Deployed ${GITHUB_SHA::7} to staging." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Remove SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key

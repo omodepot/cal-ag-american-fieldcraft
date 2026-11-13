@@ -1,0 +1,99 @@
+# .gitignore — CAL-AG American Fieldcraft (custom WordPress theme repo)
+#
+# This repository holds ONLY the custom theme source and its docs/tooling.
+# WordPress core, plugins, uploads, the database and all credentials live on
+# the server (DreamHost) and are backed up separately — never in Git.
+
+# ---------------------------------------------------------------------------
+# Credentials and environment — never commit
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+wp-config.php
+wp-config-*.php
+!wp-config-sample.php
+*.pem
+*.key
+*.ppk
+id_rsa*
+id_ed25519*
+*.p12
+*.pfx
+auth.json
+.htpasswd
+sftp-config.json
+.ftpconfig
+.vscode/sftp.json
+deploy-credentials*
+secrets.*
+
+# ---------------------------------------------------------------------------
+# WordPress core, plugins, uploads (if a full site is ever checked out here)
+# ---------------------------------------------------------------------------
+/wp-admin/
+/wp-includes/
+/wp-*.php
+/index.php
+/xmlrpc.php
+/license.txt
+/readme.html
+wp-content/uploads/
+wp-content/plugins/
+wp-content/mu-plugins/
+wp-content/upgrade/
+wp-content/cache/
+wp-content/backup*/
+wp-content/backups/
+wp-content/ai1wm-backups/
+wp-content/updraft/
+wp-content/advanced-cache.php
+wp-content/object-cache.php
+wp-content/db.php
+wp-content/debug.log
+# Other themes (only our custom theme is tracked)
+wp-content/themes/*
+!wp-content/themes/cal-ag-fieldcraft/
+
+# ---------------------------------------------------------------------------
+# Database dumps and site backups
+# ---------------------------------------------------------------------------
+*.sql
+*.sql.gz
+*.sqlite
+*.db
+*.wpress
+*.bak
+*.backup
+
+# ---------------------------------------------------------------------------
+# Dependencies and build output
+# ---------------------------------------------------------------------------
+node_modules/
+vendor/
+dist/
+build/
+*.zip
+*.tar.gz
+
+# ---------------------------------------------------------------------------
+# Logs, caches, temp and editor/OS files
+# ---------------------------------------------------------------------------
+*.log
+npm-debug.log*
+yarn-error.log*
+.cache/
+.sass-cache/
+.phpunit.result.cache
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
