@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const CAL_AG_FIELDCRAFT_PAGES_VERSION = '2';
+const CAL_AG_FIELDCRAFT_PAGES_VERSION = '3';
 
 /**
  * Pages to create. Order matters: parents before children.
