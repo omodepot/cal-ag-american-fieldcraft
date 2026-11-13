@@ -29,6 +29,16 @@ $document = str_replace(
 	$document
 );
 
+// Shared header (menu from Appearance > Menus), identical markup on every page.
+$document = preg_replace_callback(
+	'#<header class="site-nav">.*?</header>#s',
+	static function () {
+		return cal_ag_fieldcraft_shell_part( 'header' );
+	},
+	$document,
+	1
+);
+
 // Editable homepage content from the front page (includes previews of unsaved changes).
 $front_post = null;
 if ( is_page() && ! empty( $GLOBALS['wp_query']->posts[0] ) ) {

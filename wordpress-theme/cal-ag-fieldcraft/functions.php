@@ -24,6 +24,7 @@ function cal_ag_fieldcraft_setup() {
 			'primary' => __( 'Primary Navigation', 'cal-ag-fieldcraft' ),
 		)
 	);
+	add_post_type_support( 'page', 'excerpt' );
 }
 add_action( 'after_setup_theme', 'cal_ag_fieldcraft_setup' );
 
@@ -33,6 +34,9 @@ function cal_ag_fieldcraft_assets() {
 	wp_enqueue_style( 'cal-ag-base', get_template_directory_uri() . '/styles.css', array(), $version );
 	wp_enqueue_style( 'cal-ag-refinement', get_template_directory_uri() . '/refinement.css', array( 'cal-ag-base' ), $version );
 	wp_enqueue_script( 'cal-ag-site', get_template_directory_uri() . '/site.js', array(), $version, true );
+	if ( ! is_front_page() ) {
+		wp_enqueue_style( 'cal-ag-pages', get_template_directory_uri() . '/pages.css', array( 'cal-ag-refinement' ), $version );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'cal_ag_fieldcraft_assets' );
 
@@ -54,14 +58,18 @@ add_filter( 'wp_robots', 'cal_ag_fieldcraft_robots' );
  */
 const CAL_AG_FIELDCRAFT_REVIEW_ASSETS = 'https://cal-ag-fieldcraft-review-7m4k2.info249216.chatgpt.site/assets/';
 
+require_once __DIR__ . '/inc/shell.php';
+require_once __DIR__ . '/inc/pages.php';
+
 /**
  * Builds the editable homepage content from the approved static page:
  * one Custom HTML block per <section> inside <main>, markup unchanged except
  * image URLs, which point at the theme's assets/ folder.
  *
+ * @param bool $link_pages Point homepage links at the site's pages (see inc/pages.php).
  * @return string Block markup, or '' if the approved page can't be read.
  */
-function cal_ag_fieldcraft_home_blocks() {
+function cal_ag_fieldcraft_home_blocks( $link_pages = true ) {
 	$html = file_get_contents( get_template_directory() . '/static-home.html' );
 	if ( false === $html ) {
 		return '';
@@ -77,6 +85,9 @@ function cal_ag_fieldcraft_home_blocks() {
 		wp_make_link_relative( get_template_directory_uri() ) . '/assets/',
 		$main
 	);
+	if ( $link_pages ) {
+		$main = cal_ag_fieldcraft_apply_home_links( $main );
+	}
 
 	$blocks = array();
 	foreach ( preg_split( '/(?=<section\b)/', $main, -1, PREG_SPLIT_NO_EMPTY ) as $section ) {

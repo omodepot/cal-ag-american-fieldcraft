@@ -1,0 +1,136 @@
+/*
+ * CAL-AG American Fieldcraft — inner pages.
+ * Extends the approved design (styles.css + refinement.css, unchanged) to
+ * WordPress pages. Loaded on inner pages only; the homepage never loads it.
+ * Same palette, type and spacing as the approved homepage.
+ */
+
+/* Page banner — a shorter version of the homepage hero */
+.page-hero{position:relative;height:78vh;min-height:600px;max-height:900px;overflow:hidden;color:#fff}
+.page-hero-short{height:56vh;min-height:460px}
+.page-hero .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.03)}
+.page-hero-copy{position:absolute;z-index:2;left:8vw;right:8vw;bottom:10vh}
+.page-hero h1{font:500 clamp(56px,7.6vw,122px)/.88 Playfair Display;letter-spacing:-.06em;margin:28px 0 30px;max-width:1100px}
+.page-hero-copy p{max-width:560px;font-size:17px;line-height:1.6;margin:0}
+
+/* Page body: block content */
+.page-body{background:var(--cream);color:var(--ink)}
+.page-body>*{margin-top:0;margin-bottom:0}
+.page-body>p,.page-body>h2,.page-body>h3,.page-body>ul,.page-body>ol,.page-body>figure{max-width:860px;margin-left:auto;margin-right:auto;padding:0 6vw}
+.page-body>p:first-child{padding-top:12vh}
+.page-body>:last-child:not(.fc-section){padding-bottom:12vh}
+.page-body p{font-size:17px;line-height:1.75}
+.page-body a{color:inherit}
+.page-body h2{font:500 clamp(46px,5.6vw,86px)/.94 Playfair Display;letter-spacing:-.05em;margin:0 0 34px}
+.page-body h3{font:500 34px/1 Playfair Display;letter-spacing:-.02em;margin:16px 0 14px}
+.page-body em{color:var(--moss)}
+.page-body figure{margin:0}
+.page-body img{max-width:100%;height:auto;display:block}
+
+/* Sections */
+.fc-section{padding:15vh 7vw}
+.fc-section>*{margin-top:0;margin-bottom:0}
+.fc-section-paper{background:#f6f3eb}
+.fc-section-dark{background:var(--ink);color:#fff}
+.fc-section-dark em{color:#aeb99c}
+.fc-section-sage{background:#83906f}
+.fc-section-sage em{color:#eeeae0}
+.fc-section-stone{background:#dcd8cd}
+
+/* Small caps label, as on the homepage section labels */
+.page-body .fc-label{font:600 11px/1.45 Manrope;letter-spacing:.11em;text-transform:uppercase;margin:0 0 22px}
+
+/* Large editorial statement, like the homepage manifesto */
+.page-body .fc-lead{font:500 clamp(38px,4.6vw,72px)/1.04 Playfair Display;letter-spacing:-.045em;max-width:1160px;margin:0}
+
+/* Two-column split: label column + content column */
+.page-body .fc-split{display:grid;grid-template-columns:1fr 4fr;gap:5vw;margin:0}
+.page-body .fc-split>.wp-block-column{flex-basis:auto!important;margin:0}
+.page-body .fc-split .fc-label{writing-mode:vertical-rl;margin:0}
+.page-body .fc-body{display:grid;grid-template-columns:1.2fr 1fr;gap:8vw;margin:60px 0 0}
+.page-body .fc-body>.wp-block-column{flex-basis:auto!important;margin:0}
+
+/* Text link with underline, as on the homepage */
+.page-body .fc-more{margin:28px 0 0}
+.page-body .fc-more a{text-decoration:none;border-bottom:1px solid;padding-bottom:7px;font:600 12px/1.5 Manrope;letter-spacing:.1em;text-transform:uppercase}
+
+/* Equipment / product cards */
+.page-body .fc-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:70px 0 0}
+.page-body .fc-cards.fc-cards-3{grid-template-columns:repeat(3,1fr)}
+.page-body .fc-cards>.wp-block-column{flex-basis:auto!important;margin:0;background:#fff;color:var(--ink);padding:0 0 30px}
+.page-body .fc-cards>.wp-block-column>*:not(figure){padding-left:28px;padding-right:28px}
+.page-body .fc-cards figure img{width:100%;height:360px;object-fit:cover}
+.page-body .fc-cards .fc-label{margin:26px 0 0}
+.page-body .fc-cards h3{margin:14px 0 12px}
+.page-body .fc-cards p{font-size:15px;line-height:1.65;margin:0}
+.page-body .fc-cards .fc-more{margin-top:22px}
+.page-body .fc-cards .fc-more a{font-size:11px}
+.page-body .fc-cards em{color:var(--moss)}
+
+/* Model families: plain bordered tiles (no photos) */
+.page-body .fc-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:2px;margin:70px 0 0}
+.page-body .fc-tiles+.fc-tiles{margin-top:2px}
+.page-body .fc-tiles>.wp-block-column{flex-basis:auto!important;margin:0;background:#fff;padding:34px 28px 38px;min-height:250px}
+.fc-section-dark .fc-tiles>.wp-block-column{background:#17291f;color:#fff}
+.page-body .fc-tiles h3{font-size:30px;margin:18px 0 14px;scroll-margin-top:40px}
+.page-body .fc-tiles p{font-size:15px;line-height:1.65;margin:0}
+.page-body .fc-tiles .fc-label{margin:0}
+
+/* Numbered list, like the homepage parts/support list */
+.page-body .fc-steps{list-style:none;counter-reset:fc;margin:60px 0 0;padding:0 50px;background:#dcd8cd;max-width:none}
+.page-body .fc-steps>li{counter-increment:fc;position:relative;padding:32px 0 32px 50px;border-bottom:1px solid #10201944;font-size:15px;line-height:1.6}
+.page-body .fc-steps>li:last-child{border-bottom:0}
+.page-body .fc-steps>li:before{content:"0" counter(fc);position:absolute;left:0;top:41px;font-size:12px}
+.page-body .fc-steps strong{display:block;font:500 27px/1.15 Playfair Display;margin-bottom:8px}
+
+/* Timeline */
+.page-body .fc-timeline{list-style:none;margin:70px 0 0;padding:0;max-width:none;border-top:1px solid #10201966}
+.page-body .fc-timeline>li{display:grid;grid-template-columns:minmax(160px,1fr) 3fr;gap:5vw;padding:38px 0;border-bottom:1px solid #10201966;font-size:17px;line-height:1.7}
+.page-body .fc-timeline strong{font:500 64px/.9 Playfair Display;letter-spacing:-.05em}
+
+/* Facts / contact rows */
+.page-body .fc-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:5vw;margin:60px 0 0}
+.page-body .fc-facts>.wp-block-column{flex-basis:auto!important;margin:0;border-top:1px solid;padding-top:22px}
+.page-body .fc-facts p{margin:0 0 6px}
+.page-body .fc-facts .fc-big{font:500 30px/1.15 Playfair Display}
+.page-body .fc-facts .fc-big a{text-decoration:none;border-bottom:1px solid}
+
+/* Map embed */
+.page-body .fc-map{margin:60px 0 0;line-height:0}
+.page-body .fc-map iframe{width:100%;height:460px;border:0;filter:grayscale(1) contrast(.95)}
+
+/* Site index band (inner pages, above the approved footer) */
+.site-index{background:#0f1f17;color:#fff;padding:13vh 7vw 11vh;display:grid;grid-template-columns:1.1fr 2fr;gap:6vw;border-bottom:1px solid #ffffff22}
+.site-index-lead>span,.site-index-links span{font:600 11px/1.45 Manrope;letter-spacing:.11em}
+.site-index h2{font:500 clamp(48px,5.4vw,80px)/.92 Playfair Display;letter-spacing:-.06em;margin:30px 0 36px}
+.site-index h2 em{color:#aeb99c}
+.site-index-phone{font:500 28px Playfair Display;color:#fff;text-decoration:none;border-bottom:1px solid}
+.site-index-links{display:grid;grid-template-columns:repeat(3,1fr);gap:4vw;align-content:end}
+.site-index-links>div{display:flex;flex-direction:column;gap:13px;border-top:1px solid #ffffff44;padding-top:22px}
+.site-index-links span{margin-bottom:8px;color:#aeb99c}
+.site-index-links a{color:#fff;text-decoration:none;font-size:15px}
+.site-index-links a:hover,.site-index-links a[aria-current]{text-decoration:underline;text-underline-offset:4px}
+.site-index-links p{margin:0;font-size:14px;line-height:1.7;color:#dce4df}
+
+/* Current page in the header menu */
+.site-nav nav a[aria-current]{border-bottom:1px solid;padding-bottom:6px}
+
+/* Generic entries (fallback template) */
+.page-body .fc-entry{max-width:860px;margin:0 auto;padding:8vh 6vw 0}
+.page-body .fc-entry h2{font-size:44px}
+
+@media(max-width:800px){
+  .page-hero{min-height:560px;height:74vh}
+  .page-hero-copy{left:6vw;right:6vw}
+  .page-hero h1{font-size:15vw}
+  .fc-section{padding:10vh 5vw}
+  .page-body .fc-split,.page-body .fc-body,.page-body .fc-cards,.page-body .fc-cards.fc-cards-3,.page-body .fc-tiles,.page-body .fc-facts{grid-template-columns:1fr}
+  .page-body .fc-split .fc-label{writing-mode:initial;margin-bottom:24px}
+  .page-body .fc-body{margin-top:40px;gap:0}
+  .page-body .fc-cards figure img{height:62vw;min-height:260px}
+  .page-body .fc-steps{padding:0 26px}
+  .page-body .fc-timeline>li{grid-template-columns:1fr;gap:6px}
+  .page-body .fc-timeline strong{font-size:48px}
+  .site-index{grid-template-columns:1fr;gap:9vh}
+  .site-index-links{grid-template-columns:1fr;gap:28px}
+}
