@@ -116,7 +116,9 @@
 .page-body .fc-features>li{padding:11px 0;border-bottom:1px solid #10201933;font-size:15px;line-height:1.5}
 .fc-section-dark .fc-features,.fc-section-dark .fc-features>li{border-color:#ffffff33}
 .page-body .fc-specs{margin:0;overflow-x:auto}
-.page-body .fc-specs table{width:100%;border-collapse:collapse;font-size:15px;min-width:520px}
+.page-body .fc-specs table{width:100%;border-collapse:collapse;font-size:15px;min-width:520px;border:0}
+.page-body .fc-specs thead,.page-body .fc-specs tfoot{border:0}
+.page-body .fc-specs th,.page-body .fc-specs td{border-top:0;border-left:0;border-right:0}
 .page-body .fc-specs th{font:600 11px/1.4 Manrope;letter-spacing:.08em;text-transform:uppercase;text-align:left;padding:0 14px 12px 0;border-bottom:1px solid currentColor;vertical-align:bottom}
 .page-body .fc-specs td{padding:13px 14px 13px 0;border-bottom:1px solid #10201933;white-space:nowrap}
 .page-body .fc-specs td:first-child{font:500 19px/1.2 Playfair Display}

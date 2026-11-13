@@ -58,8 +58,8 @@ function cal_ag_fieldcraft_page_definitions() {
 		array(
 			'path'    => 'equipment/perfect-van-wamel/orchard-rotary-mowers',
 			'title'   => 'Orchard rotary mowers',
-			'excerpt' => 'PERFECT ZA and RF rotary mowers with swing arms that mow around every trunk.',
-			'hero'    => 'PVW-ROTARY-SWING-ARM.jpg',
+			'excerpt' => 'PERFECT ZA and RF rotary mowers with swing arms that mow around every trunk, fence post, and solar panel stand.',
+			'hero'    => 'PVW-RF-SOLAR-2.jpg',
 			'order'   => 4,
 		),
 		array(
@@ -171,7 +171,8 @@ function cal_ag_fieldcraft_fill_tokens( $content ) {
  * Creates missing pages and the header menu, once per pages version.
  */
 function cal_ag_fieldcraft_ensure_pages() {
-	if ( ! current_user_can( 'manage_options' ) || get_option( 'cal_ag_fieldcraft_pages_version' ) === CAL_AG_FIELDCRAFT_PAGES_VERSION ) {
+	$version = CAL_AG_FIELDCRAFT_PAGES_VERSION . '/' . wp_get_theme( get_template() )->get( 'Version' );
+	if ( ! current_user_can( 'manage_options' ) || get_option( 'cal_ag_fieldcraft_pages_version' ) === $version ) {
 		return;
 	}
 
@@ -229,7 +230,7 @@ function cal_ag_fieldcraft_ensure_pages() {
 	cal_ag_fieldcraft_ensure_menu();
 	cal_ag_fieldcraft_ensure_menu_children();
 	cal_ag_fieldcraft_update_home_links();
-	update_option( 'cal_ag_fieldcraft_pages_version', CAL_AG_FIELDCRAFT_PAGES_VERSION );
+	update_option( 'cal_ag_fieldcraft_pages_version', $version );
 }
 add_action( 'admin_init', 'cal_ag_fieldcraft_ensure_pages', 20 );
 

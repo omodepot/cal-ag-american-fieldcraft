@@ -97,8 +97,11 @@ At launch, old URLs (`/flail-mowers.php`, `/about-us.php`, `/brochures.php`,
 bookmarks and search rankings carry over. The map is in
 `cal_ag_fieldcraft_legacy_redirects()` in `inc/pages.php`.
 
-Brochures in `downloads/` (from the client's shared folder) are linked from the
-PERFECT Van Wamel page. Not published on purpose: the Basic-line sheet (marked
+Brochures in `downloads/` (from the client's shared folder and the old
+cal-ag.com Brochures page) are listed on Photos & videos and linked from the
+matching product pages. The FV2 and ZW brochures from the old site contain a
+stray designer label ("Tekst 1 - 9/12 pt - light"); they were already public,
+so they were carried over unchanged. Not published on purpose: the Basic-line sheet (marked
 "Prijslijst"), the rotary toppers/flail mowers brochure (contains placeholder
 text), and the Skyros Vario dealer presentation. The Alpego Focus Line
 brochure is Italian; the page links to alpego.com instead.
