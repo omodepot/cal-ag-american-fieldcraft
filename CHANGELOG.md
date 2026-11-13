@@ -5,6 +5,13 @@ All notable changes to the CAL-AG American Fieldcraft theme. Versions follow
 
 ## [Unreleased]
 
+### Added
+- Shared header/footer on every page, inner page template, site index band.
+- Pages: Equipment, PERFECT Van Wamel, Alpego, Electrostatic sprayers, Micron,
+  Company, Parts & service, Contact (content from cal-ag.com and the
+  client's brochures), Primary menu, four PERFECT brochure downloads.
+- New client photos, including two PERFECT machines (resized for web).
+
 ### Changed
 - Homepage sections are now an editable WordPress page (Pages > Home), created
   automatically from the approved design and set as the front page. Header,

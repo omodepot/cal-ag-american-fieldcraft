@@ -30,14 +30,14 @@ function cal_ag_fieldcraft_page_definitions() {
 		array(
 			'path'    => 'equipment/perfect-van-wamel',
 			'title'   => 'PERFECT Van Wamel',
-			'excerpt' => 'Flail shredders, mowers, and brush sweepers from Holland, distributed by CAL-AG since 1982.',
-			'hero'    => 'UJOF4856.JPG',
+			'excerpt' => 'Rotary mowers, flail choppers, Solo-Swing, brush sweepers, and soil cultivation from Holland, distributed by CAL-AG since 1982.',
+			'hero'    => 'PVW-ROTARY-SWING-ARM.jpg',
 			'order'   => 1,
 		),
 		array(
 			'path'    => 'equipment/alpego',
 			'title'   => 'Alpego',
-			'excerpt' => 'Tillers, power harrows, and subsoilers for professional soil preparation.',
+			'excerpt' => 'The Focus Line for specialty crops: in-row cultivators, rotary tillers, power harrows, and subsoilers.',
 			'hero'    => 'AGJK2166.JPG',
 			'order'   => 2,
 		),
@@ -82,13 +82,17 @@ function cal_ag_fieldcraft_page_definitions() {
 /**
  * Replaces content tokens with this site's paths.
  *
- * @param string $content Block markup with {{assets}} / {{home}} tokens.
+ * @param string $content Block markup with {{assets}} / {{theme}} / {{home}} tokens.
  * @return string
  */
 function cal_ag_fieldcraft_fill_tokens( $content ) {
 	return str_replace(
-		array( '{{assets}}', '{{home}}' ),
-		array( wp_make_link_relative( get_template_directory_uri() ) . '/assets/', trailingslashit( wp_make_link_relative( home_url( '/' ) ) ) ),
+		array( '{{assets}}', '{{theme}}', '{{home}}' ),
+		array(
+			wp_make_link_relative( get_template_directory_uri() ) . '/assets/',
+			wp_make_link_relative( get_template_directory_uri() ) . '/',
+			trailingslashit( wp_make_link_relative( home_url( '/' ) ) ),
+		),
 		$content
 	);
 }
@@ -193,11 +197,11 @@ function cal_ag_fieldcraft_home_link_map() {
 		'02 / ALPEGO'                  => 'equipment/alpego/',
 		'03 / MARTIGNANI + LECTROBLAST' => 'equipment/electrostatic-sprayers/',
 		'04 / MICRON SPRAYERS'         => 'equipment/micron/',
-		'PERFECT / FEATURED'           => 'equipment/perfect-van-wamel/#orchard-rotary-mowers',
+		'PERFECT / FEATURED'           => 'equipment/perfect-van-wamel/#rotary-mowers',
 		'ROW-FLOOR MAINTENANCE'        => 'equipment/perfect-van-wamel/#brush-sweepers',
 		'MARTIGNANI'                   => 'equipment/electrostatic-sprayers/',
 		'01 Flail mowers'              => 'equipment/perfect-van-wamel/#flail-mowers',
-		'02 Vineyard mowers'           => 'equipment/perfect-van-wamel/#vineyard-mowers',
+		'02 Vineyard mowers'           => 'equipment/perfect-van-wamel/#rotary-mowers',
 		'03 Original parts'            => 'parts-service/',
 		'Our full story'               => 'company/',
 	);

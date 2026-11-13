@@ -36,3 +36,46 @@ existing page, and if a static homepage is already configured it uses that one.
 
 Section content is output exactly as saved (no automatic paragraph or quote
 rewriting), so the page matches the approved design until it's edited.
+
+## Site pages, header and footer
+
+Every page uses the same header (logo, menu, phone) and footer as the
+approved homepage; both are read from `static-home.html`. Inner pages add a
+site index band above the footer with links to every page and the contact
+details (the header menu is hidden on phones in the approved design, so this
+band is the mobile navigation).
+
+The first time an administrator opens WP Admin with this theme version, it
+creates any of these pages that don't exist yet (it never overwrites a page):
+
+| Page | Address | Content file |
+|---|---|---|
+| Equipment | `/equipment/` | `content/equipment.html` |
+| PERFECT Van Wamel | `/equipment/perfect-van-wamel/` | `content/perfect-van-wamel.html` |
+| Alpego | `/equipment/alpego/` | `content/alpego.html` |
+| Electrostatic sprayers | `/equipment/electrostatic-sprayers/` | `content/electrostatic-sprayers.html` |
+| Micron weed sprayers | `/equipment/micron/` | `content/micron.html` |
+| Company | `/company/` | `content/company.html` |
+| Parts & service | `/parts-service/` | `content/parts-service.html` |
+| Contact | `/contact/` | `content/contact.html` |
+
+It also creates the **Primary** menu (Products, Featured, Company,
+Parts & service) under Appearance > Menus, and points the homepage's section
+links at these pages (only if the Home page hasn't been edited).
+
+Editing inner pages:
+
+- They use normal WordPress blocks: click any heading, paragraph, image, or
+  list to edit it directly. Section styles come from each Group block's
+  *Additional CSS class* (`fc-section`, `fc-section-dark`, `fc-section-paper`,
+  `fc-section-stone`, `fc-section-sage`); keep those classes.
+- **Title** and **Excerpt** fill the photo banner at the top.
+- To change the banner photo, set a **Featured image**.
+- Header menu: Appearance > Menus > Primary (top-level items only; the approved
+  header shows four links).
+
+Brochures in `downloads/` (from the client's shared folder) are linked from the
+PERFECT Van Wamel page. Not published on purpose: the Basic-line sheet (marked
+"Prijslijst"), the rotary toppers/flail mowers brochure (contains placeholder
+text), and the Skyros Vario dealer presentation. The Alpego Focus Line
+brochure is Italian; the page links to alpego.com instead.
