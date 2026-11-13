@@ -63,7 +63,7 @@ or points into a `cal-ag.com` / `www.cal-ag.com` directory.
    - tars the current staging theme to `~/theme-backups/staging/` on the server (keeps last 10),
    - `rsync`s the theme folder only, removing files that no longer exist in Git,
    - appends the commit SHA to `~/theme-backups/staging/DEPLOY_LOG.txt`.
-3. In staging WP Admin, confirm **Appearance → Themes** shows *CAL-AG Fieldcraft* as active, then review the pages against the approved design.
+3. In staging WP Admin, confirm **Appearance → Themes** shows *CAL-AG American Fieldcraft* as active, then review the pages against the approved design.
 
 ## Releasing to production (cal-ag.com)
 

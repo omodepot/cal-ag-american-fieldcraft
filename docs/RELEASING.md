@@ -19,7 +19,7 @@ Releases are cut **only from `main`**, after the `staging` → `main` PR is appr
    `wordpress-theme/cal-ag-fieldcraft/style.css`:
    ```css
    /*
-   Theme Name: CAL-AG Fieldcraft
+   Theme Name: CAL-AG American Fieldcraft
    Version: 1.0.0
    */
    ```
