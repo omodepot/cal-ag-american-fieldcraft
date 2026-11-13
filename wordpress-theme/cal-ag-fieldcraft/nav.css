@@ -1,0 +1,19 @@
+/*
+ * CAL-AG American Fieldcraft — header dropdowns (all pages).
+ * Top-level links keep the approved styles from styles.css/refinement.css.
+ * Dropdowns open on hover and on keyboard focus.
+ */
+.site-nav .nav-item{position:relative;display:flex;align-items:center}
+.site-nav .nav-item>a:after{content:"";display:inline-block;width:5px;height:5px;border-right:1px solid;border-bottom:1px solid;transform:rotate(45deg);margin:0 2px 4px 9px;opacity:.75}
+.site-nav .nav-drop{position:absolute;left:-30px;top:100%;padding-top:30px;z-index:30;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .25s,transform .25s,visibility .25s}
+.site-nav .nav-item:hover>.nav-drop,.site-nav .nav-item:focus-within>.nav-drop{opacity:1;visibility:visible;transform:none}
+.site-nav .nav-drop-inner{background:rgba(13,27,20,.96);border:1px solid #ffffff26;padding:26px 30px;min-width:250px;display:flex;flex-direction:column;gap:13px;box-shadow:0 24px 50px #0006}
+.site-nav .nav-drop-inner:has(.nav-drop-group){min-width:540px}
+.site-nav .nav-drop-group{display:grid;grid-template-columns:1fr 1fr;gap:11px 34px;padding-bottom:20px;margin-bottom:6px;border-bottom:1px solid #ffffff26}
+.site-nav .nav-drop-group .nav-drop-head{grid-column:1/-1;margin-bottom:4px}
+.site-nav .nav-drop a{display:block;color:#fff;text-decoration:none;text-transform:none;letter-spacing:0;font:500 15px/1.3 DM Sans,sans-serif;white-space:nowrap;opacity:.92}
+.site-nav .nav-drop a.nav-drop-head{font:600 11px/1.45 Manrope;letter-spacing:.11em;text-transform:uppercase;color:#aeb99c;opacity:1}
+.site-nav .nav-drop a.nav-drop-sub{font-size:14px;opacity:.8}
+.site-nav .nav-drop a:hover,.site-nav .nav-drop a:focus-visible,.site-nav .nav-drop a[aria-current]{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.site-nav nav>a[aria-current],.site-nav .nav-item>a[aria-current]{border-bottom:1px solid;padding-bottom:6px}
+@media(max-width:800px){.site-nav .nav-drop{display:none}}

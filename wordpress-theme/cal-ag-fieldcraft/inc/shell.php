@@ -87,37 +87,148 @@ function cal_ag_fieldcraft_default_nav() {
 }
 
 /**
- * Header navigation in the approved markup: <nav><a>…</a>…</nav>.
- * Items come from Appearance > Menus > "Primary Navigation" (top level only).
+ * Child pages of a page, as nav items (with one more level of children).
  *
- * @return string
+ * @param int $parent_id Page ID.
+ * @param int $depth     Levels to include.
+ * @return array[]
  */
-function cal_ag_fieldcraft_nav_html() {
+function cal_ag_fieldcraft_page_children( $parent_id, $depth = 2 ) {
+	$items = array();
+	foreach ( get_pages( array( 'parent' => $parent_id, 'sort_column' => 'menu_order,post_title', 'post_status' => 'publish' ) ) as $child ) {
+		$items[] = array(
+			'label'    => html_entity_decode( get_the_title( $child ), ENT_QUOTES, 'UTF-8' ),
+			'url'      => get_permalink( $child ),
+			'object'   => (int) $child->ID,
+			'children' => $depth > 1 ? cal_ag_fieldcraft_page_children( $child->ID, $depth - 1 ) : array(),
+		);
+	}
+	return $items;
+}
+
+/**
+ * Header items: from Appearance > Menus > "Primary Navigation" (two levels),
+ * else the approved defaults. A top-level page item with no sub-items shows
+ * its child pages as the dropdown (e.g. Products > Equipment pages).
+ *
+ * @return array[]
+ */
+function cal_ag_fieldcraft_nav_items() {
 	$items     = array();
 	$locations = get_nav_menu_locations();
 
 	if ( ! empty( $locations['primary'] ) ) {
-		foreach ( (array) wp_get_nav_menu_items( $locations['primary'] ) as $item ) {
+		$all = (array) wp_get_nav_menu_items( $locations['primary'] );
+		$sub = array();
+		foreach ( $all as $item ) {
+			if ( ! empty( $item->menu_item_parent ) ) {
+				$sub[ (int) $item->menu_item_parent ][] = array(
+					'label'    => html_entity_decode( $item->title, ENT_QUOTES, 'UTF-8' ),
+					'url'      => $item->url,
+					'object'   => ( 'post_type' === $item->type ) ? (int) $item->object_id : 0,
+					'children' => array(),
+				);
+			}
+		}
+		foreach ( $all as $item ) {
 			if ( empty( $item->menu_item_parent ) ) {
-				$items[] = array(
-					'label'  => html_entity_decode( $item->title, ENT_QUOTES, 'UTF-8' ),
-					'url'    => $item->url,
-					'object' => ( 'post_type' === $item->type ) ? (int) $item->object_id : 0,
+				$object   = ( 'post_type' === $item->type ) ? (int) $item->object_id : 0;
+				$children = isset( $sub[ (int) $item->ID ] ) ? $sub[ (int) $item->ID ] : ( $object ? cal_ag_fieldcraft_page_children( $object ) : array() );
+				$items[]  = array(
+					'label'    => html_entity_decode( $item->title, ENT_QUOTES, 'UTF-8' ),
+					'url'      => $item->url,
+					'object'   => $object,
+					'children' => $children,
 				);
 			}
 		}
 	}
-	if ( ! $items ) {
-		$items = cal_ag_fieldcraft_default_nav();
-	}
 
-	$current = is_singular() ? get_queried_object_id() : 0;
-	$html    = '<nav>';
-	foreach ( $items as $item ) {
-		$is_current = $current && ! empty( $item['object'] ) && ( $item['object'] === $current || in_array( $item['object'], get_post_ancestors( $current ), true ) );
-		$html      .= '<a href="' . esc_url( $item['url'] ) . '"' . ( $is_current ? ' aria-current="page"' : '' ) . '>' . esc_html( $item['label'] ) . '</a>';
+	if ( ! $items ) {
+		foreach ( cal_ag_fieldcraft_default_nav() as $item ) {
+			$item['object']   = 0;
+			$item['children'] = array();
+			$items[]          = $item;
+		}
+	}
+	return $items;
+}
+
+/**
+ * Header navigation. Items without a dropdown keep the approved markup
+ * (<nav><a>…</a></nav>); items with one are wrapped for the dropdown panel.
+ *
+ * @return string
+ */
+function cal_ag_fieldcraft_nav_html() {
+	$current   = is_singular() ? get_queried_object_id() : 0;
+	$ancestors = $current ? get_post_ancestors( $current ) : array();
+	$is_cur    = static function ( $item ) use ( $current, $ancestors ) {
+		return $current && ! empty( $item['object'] ) && ( $item['object'] === $current || in_array( $item['object'], $ancestors, true ) );
+	};
+	$link      = static function ( $item, $class = '' ) use ( $is_cur ) {
+		return '<a href="' . esc_url( $item['url'] ) . '"' . ( $class ? ' class="' . esc_attr( $class ) . '"' : '' ) . ( $is_cur( $item ) ? ' aria-current="page"' : '' ) . '>' . esc_html( $item['label'] ) . '</a>';
+	};
+
+	$html = '<nav>';
+	foreach ( cal_ag_fieldcraft_nav_items() as $i => $item ) {
+		if ( empty( $item['children'] ) ) {
+			$html .= $link( $item );
+			continue;
+		}
+		$html .= '<div class="nav-item has-drop">' . $link( $item ) . '<div class="nav-drop" id="nav-drop-' . (int) $i . '"><div class="nav-drop-inner">';
+		foreach ( $item['children'] as $child ) {
+			if ( empty( $child['children'] ) ) {
+				$html .= $link( $child, 'nav-drop-link' );
+				continue;
+			}
+			$html .= '<div class="nav-drop-group">' . $link( $child, 'nav-drop-link nav-drop-head' );
+			foreach ( $child['children'] as $grandchild ) {
+				$html .= $link( $grandchild, 'nav-drop-sub' );
+			}
+			$html .= '</div>';
+		}
+		$html .= '</div></div></div>';
 	}
 	return $html . '</nav>';
+}
+
+/**
+ * Footer site index: every published page, grouped like the header.
+ *
+ * @return array<string,array[]> Column title => links.
+ */
+function cal_ag_fieldcraft_site_index() {
+	$cols      = array();
+	$equipment = get_page_by_path( 'equipment', OBJECT, 'page' );
+	$pvw       = get_page_by_path( 'equipment/perfect-van-wamel', OBJECT, 'page' );
+	$used      = array();
+
+	if ( $equipment ) {
+		$cols['EQUIPMENT'][] = array( 'label' => 'All equipment', 'url' => get_permalink( $equipment ) );
+		$used[]              = $equipment->ID;
+		foreach ( cal_ag_fieldcraft_page_children( $equipment->ID, 1 ) as $child ) {
+			$cols['EQUIPMENT'][] = $child;
+			$used[]              = $child['object'];
+		}
+	}
+	if ( $pvw ) {
+		foreach ( cal_ag_fieldcraft_page_children( $pvw->ID, 1 ) as $child ) {
+			$cols['PERFECT VAN WAMEL'][] = $child;
+			$used[]                      = $child['object'];
+		}
+	}
+
+	$cols['CAL-AG'][] = array( 'label' => 'Home', 'url' => home_url( '/' ) );
+	$front            = (int) get_option( 'page_on_front' );
+	$exclude          = array_filter( array_merge( $used, array( $front, (int) get_option( 'page_for_posts' ) ) ) );
+	foreach ( get_pages( array( 'parent' => 0, 'sort_column' => 'menu_order,post_title', 'post_status' => 'publish', 'exclude' => $exclude ) ) as $page ) {
+		$cols['CAL-AG'][] = array( 'label' => html_entity_decode( get_the_title( $page ), ENT_QUOTES, 'UTF-8' ), 'url' => get_permalink( $page ) );
+		foreach ( cal_ag_fieldcraft_page_children( $page->ID, 1 ) as $child ) {
+			$cols['CAL-AG'][] = $child;
+		}
+	}
+	return $cols;
 }
 
 /**

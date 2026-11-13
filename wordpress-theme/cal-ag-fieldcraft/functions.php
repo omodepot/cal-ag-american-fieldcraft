@@ -34,6 +34,7 @@ function cal_ag_fieldcraft_assets() {
 	wp_enqueue_style( 'cal-ag-base', get_template_directory_uri() . '/styles.css', array(), $version );
 	wp_enqueue_style( 'cal-ag-refinement', get_template_directory_uri() . '/refinement.css', array( 'cal-ag-base' ), $version );
 	wp_enqueue_script( 'cal-ag-site', get_template_directory_uri() . '/site.js', array(), $version, true );
+	wp_enqueue_style( 'cal-ag-nav', get_template_directory_uri() . '/nav.css', array( 'cal-ag-refinement' ), $version );
 	if ( ! is_front_page() ) {
 		wp_enqueue_style( 'cal-ag-pages', get_template_directory_uri() . '/pages.css', array( 'cal-ag-refinement' ), $version );
 	}

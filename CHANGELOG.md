@@ -3,9 +3,13 @@
 All notable changes to the CAL-AG American Fieldcraft theme. Versions follow
 [Semantic Versioning](https://semver.org/); see `docs/RELEASING.md`.
 
-## [Unreleased]
+## [Unreleased] — theme version 1.1.0
 
 ### Added
+- Nine PERFECT Van Wamel family pages with every spec table from the old site,
+  Photos & videos page (11 videos, photos, brochures), full team bios.
+- Header dropdowns (Products, Company, Parts & service); footer lists every page.
+- 301 redirects from all old cal-ag.com addresses.
 - Shared header/footer on every page, inner page template, site index band.
 - Pages: Equipment, PERFECT Van Wamel, Alpego, Electrostatic sprayers, Micron,
   Company, Parts & service, Contact (content from cal-ag.com and the

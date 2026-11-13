@@ -9,9 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! is_front_page() ) :
-	$cal_ag_link = static function ( $path ) {
-		return esc_url( home_url( $path ) );
-	};
 	?>
 <section class="site-index" aria-label="Site index">
 	<div class="site-index-lead">
@@ -20,21 +17,14 @@ if ( ! is_front_page() ) :
 		<a class="site-index-phone" href="tel:5598341588">559.834.1588 &#8599;</a>
 	</div>
 	<nav class="site-index-links" aria-label="Site pages">
+		<?php foreach ( cal_ag_fieldcraft_site_index() as $cal_ag_title => $cal_ag_links ) : ?>
 		<div>
-			<span>EQUIPMENT</span>
-			<a href="<?php echo $cal_ag_link( '/equipment/' ); ?>">All equipment</a>
-			<a href="<?php echo $cal_ag_link( '/equipment/perfect-van-wamel/' ); ?>">PERFECT Van Wamel</a>
-			<a href="<?php echo $cal_ag_link( '/equipment/alpego/' ); ?>">Alpego</a>
-			<a href="<?php echo $cal_ag_link( '/equipment/electrostatic-sprayers/' ); ?>">Electrostatic sprayers</a>
-			<a href="<?php echo $cal_ag_link( '/equipment/micron/' ); ?>">Micron weed sprayers</a>
+			<span><?php echo esc_html( $cal_ag_title ); ?></span>
+			<?php foreach ( $cal_ag_links as $cal_ag_item ) : ?>
+				<a href="<?php echo esc_url( $cal_ag_item['url'] ); ?>"<?php echo ( is_page() && ! empty( $cal_ag_item['object'] ) && get_queried_object_id() === $cal_ag_item['object'] ) ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $cal_ag_item['label'] ); ?></a>
+			<?php endforeach; ?>
 		</div>
-		<div>
-			<span>CAL-AG</span>
-			<a href="<?php echo $cal_ag_link( '/' ); ?>">Home</a>
-			<a href="<?php echo $cal_ag_link( '/company/' ); ?>">Company</a>
-			<a href="<?php echo $cal_ag_link( '/parts-service/' ); ?>">Parts &amp; service</a>
-			<a href="<?php echo $cal_ag_link( '/contact/' ); ?>">Contact</a>
-		</div>
+		<?php endforeach; ?>
 		<div>
 			<span>VISIT</span>
 			<p>2020 S. Golden State #106<br>Fowler, California 93625</p>

@@ -57,7 +57,19 @@ creates any of these pages that don't exist yet (it never overwrites a page):
 | Micron weed sprayers | `/equipment/micron/` | `content/micron.html` |
 | Company | `/company/` | `content/company.html` |
 | Parts & service | `/parts-service/` | `content/parts-service.html` |
+| Photos & videos | `/photos-videos/` | `content/photos-videos.html` |
 | Contact | `/contact/` | `content/contact.html` |
+| PERFECT families (9) | `/equipment/perfect-van-wamel/<family>/` | `content/<family>.html` |
+
+The nine PERFECT family pages (flail shredders, flail mowers, vineyard mowers,
+orchard rotary mowers, vineyard & orchard rotary mowers, Solo-Swing, brush
+sweepers, multi mowers, soil cultivation) carry every specification table from
+the old cal-ag.com product pages, with minimum horsepower added from the
+manufacturer's USA/Canada brochure.
+
+When a new theme version adds or changes content files, pages the theme created
+and **nobody has edited since** are refreshed automatically; edited pages are
+never touched.
 
 It also creates the **Primary** menu (Products, Featured, Company,
 Parts & service) under Appearance > Menus, and points the homepage's section
@@ -71,8 +83,19 @@ Editing inner pages:
   `fc-section-stone`, `fc-section-sage`); keep those classes.
 - **Title** and **Excerpt** fill the photo banner at the top.
 - To change the banner photo, set a **Featured image**.
-- Header menu: Appearance > Menus > Primary (top-level items only; the approved
-  header shows four links).
+- Header menu: Appearance > Menus > Primary. The top level keeps the approved
+  four links. Sub-items become a dropdown; a top-level page with no sub-items
+  (Products) shows its child pages automatically, with PERFECT's families
+  grouped inside. On phones the header menu is hidden (approved design) and the
+  footer index lists every page.
+- Footer index lists every published page automatically.
+
+## Old cal-ag.com addresses
+
+At launch, old URLs (`/flail-mowers.php`, `/about-us.php`, `/brochures.php`,
+`/brochure/*.pdf`, etc.) redirect permanently (301) to their new pages, so
+bookmarks and search rankings carry over. The map is in
+`cal_ag_fieldcraft_legacy_redirects()` in `inc/pages.php`.
 
 Brochures in `downloads/` (from the client's shared folder) are linked from the
 PERFECT Van Wamel page. Not published on purpose: the Basic-line sheet (marked
