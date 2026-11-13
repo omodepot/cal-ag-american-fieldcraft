@@ -1,5 +1,5 @@
 /*
- * CAL-AG American Fieldcraft — header dropdowns (all pages).
+ * CAL-AG American Fieldcraft — header dropdowns and footer site index (all pages).
  * Top-level links keep the approved styles from styles.css/refinement.css.
  * Dropdowns open on hover and on keyboard focus.
  */
@@ -16,4 +16,22 @@
 .site-nav .nav-drop a.nav-drop-sub{font-size:14px;opacity:.8}
 .site-nav .nav-drop a:hover,.site-nav .nav-drop a:focus-visible,.site-nav .nav-drop a[aria-current]{opacity:1;text-decoration:underline;text-underline-offset:4px}
 .site-nav nav>a[aria-current],.site-nav .nav-item>a[aria-current]{border-bottom:1px solid;padding-bottom:6px}
-@media(max-width:800px){.site-nav .nav-drop{display:none}}
+/* Site index band (inner pages, above the approved footer) */
+.site-index{background:#0f1f17;color:#fff;padding:13vh 6vw 11vh;display:grid;grid-template-columns:.85fr 2.6fr;gap:5vw;border-bottom:1px solid #ffffff22}
+.site-index-lead>span,.site-index-links span{font:600 11px/1.45 Manrope;letter-spacing:.11em}
+.site-index h2{font:500 clamp(48px,5.4vw,80px)/.92 Playfair Display;letter-spacing:-.06em;margin:30px 0 36px}
+.site-index h2 em{color:#aeb99c}
+.site-index-phone{font:500 28px Playfair Display;color:#fff;text-decoration:none;border-bottom:1px solid}
+.site-index-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:3vw;align-content:end}
+.site-index-links>div{display:flex;flex-direction:column;gap:13px;border-top:1px solid #ffffff44;padding-top:22px}
+.site-index-links span{margin-bottom:8px;color:#aeb99c}
+.site-index-links a{color:#fff;text-decoration:none;font-size:15px}
+.site-index-links a:hover,.site-index-links a[aria-current]{text-decoration:underline;text-underline-offset:4px}
+.site-index-links p{margin:0;font-size:14px;line-height:1.7;color:#dce4df}
+.site-index-compact{grid-template-columns:1fr;padding:10vh 6vw 9vh}
+.site-index-compact .site-index-links{align-content:start}
+@media(max-width:800px){
+  .site-nav .nav-drop{display:none}
+  .site-index{grid-template-columns:1fr;gap:9vh}
+  .site-index-links{grid-template-columns:1fr;gap:28px}
+}

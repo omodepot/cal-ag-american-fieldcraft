@@ -144,19 +144,6 @@
 .page-body .fc-map{margin:60px 0 0;line-height:0}
 .page-body .fc-map iframe{width:100%;height:460px;border:0;filter:grayscale(1) contrast(.95)}
 
-/* Site index band (inner pages, above the approved footer) */
-.site-index{background:#0f1f17;color:#fff;padding:13vh 6vw 11vh;display:grid;grid-template-columns:.85fr 2.6fr;gap:5vw;border-bottom:1px solid #ffffff22}
-.site-index-lead>span,.site-index-links span{font:600 11px/1.45 Manrope;letter-spacing:.11em}
-.site-index h2{font:500 clamp(48px,5.4vw,80px)/.92 Playfair Display;letter-spacing:-.06em;margin:30px 0 36px}
-.site-index h2 em{color:#aeb99c}
-.site-index-phone{font:500 28px Playfair Display;color:#fff;text-decoration:none;border-bottom:1px solid}
-.site-index-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:3vw;align-content:end}
-.site-index-links>div{display:flex;flex-direction:column;gap:13px;border-top:1px solid #ffffff44;padding-top:22px}
-.site-index-links span{margin-bottom:8px;color:#aeb99c}
-.site-index-links a{color:#fff;text-decoration:none;font-size:15px}
-.site-index-links a:hover,.site-index-links a[aria-current]{text-decoration:underline;text-underline-offset:4px}
-.site-index-links p{margin:0;font-size:14px;line-height:1.7;color:#dce4df}
-
 
 /* Generic entries (fallback template) */
 .page-body .fc-entry{max-width:860px;margin:0 auto;padding:8vh 6vw 0}
@@ -175,6 +162,4 @@
   .page-body .fc-timeline>li{grid-template-columns:1fr;gap:6px}
   .page-body .fc-downloads>li{flex-direction:column;gap:4px;font-size:20px}
   .page-body .fc-timeline strong{font-size:48px}
-  .site-index{grid-template-columns:1fr;gap:9vh}
-  .site-index-links{grid-template-columns:1fr;gap:28px}
 }

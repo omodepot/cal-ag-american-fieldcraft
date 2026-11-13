@@ -232,6 +232,45 @@ function cal_ag_fieldcraft_site_index() {
 }
 
 /**
+ * Site index band: every page plus contact details, above the approved footer.
+ *
+ * @param bool $with_lead Include the "Your next pass starts here" headline and
+ *                        phone (off on the homepage, which already ends with it).
+ * @return string
+ */
+function cal_ag_fieldcraft_site_index_html( $with_lead = true ) {
+	$current = is_page() ? get_queried_object_id() : 0;
+	ob_start();
+	?>
+<section class="site-index<?php echo $with_lead ? '' : ' site-index-compact'; ?>" aria-label="Site index">
+	<?php if ( $with_lead ) : ?>
+	<div class="site-index-lead">
+		<span>LET&rsquo;S TALK EQUIPMENT</span>
+		<h2>Your next pass<br><em>starts here.</em></h2>
+		<a class="site-index-phone" href="tel:5598341588">559.834.1588 &#8599;</a>
+	</div>
+	<?php endif; ?>
+	<nav class="site-index-links" aria-label="Site pages">
+		<?php foreach ( cal_ag_fieldcraft_site_index() as $title => $links ) : ?>
+		<div>
+			<span><?php echo esc_html( $title ); ?></span>
+			<?php foreach ( $links as $item ) : ?>
+				<a href="<?php echo esc_url( $item['url'] ); ?>"<?php echo ( $current && ! empty( $item['object'] ) && $current === $item['object'] ) ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $item['label'] ); ?></a>
+			<?php endforeach; ?>
+		</div>
+		<?php endforeach; ?>
+		<div>
+			<span>VISIT</span>
+			<p>2020 S. Golden State #106<br>Fowler, California 93625</p>
+			<p>Tel <a href="tel:5598341588">559.834.1588</a><br>Fax 559.834.5584</p>
+		</div>
+	</nav>
+</section>
+	<?php
+	return (string) ob_get_clean();
+}
+
+/**
  * Inner pages: add the approved body class "fc" alongside WordPress's classes.
  */
 add_filter(

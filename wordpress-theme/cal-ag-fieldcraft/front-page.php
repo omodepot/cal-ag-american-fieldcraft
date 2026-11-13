@@ -70,6 +70,17 @@ $document = str_replace(
 	$document
 );
 
+// Site index (every page) above the approved footer, so all pages are reachable
+// from the homepage footer and on phones, where the header menu is hidden.
+$document = preg_replace_callback(
+	'#<footer>#',
+	static function () {
+		return cal_ag_fieldcraft_site_index_html( false ) . '<footer>';
+	},
+	$document,
+	1
+);
+
 ob_start();
 wp_head();
 $head_markup = ob_get_clean();

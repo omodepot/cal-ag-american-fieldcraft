@@ -30,13 +30,17 @@ add_action( 'after_setup_theme', 'cal_ag_fieldcraft_setup' );
 
 function cal_ag_fieldcraft_assets() {
 	$version = wp_get_theme()->get( 'Version' );
+	$ver     = static function ( $file ) use ( $version ) {
+		$path = get_template_directory() . '/' . $file;
+		return file_exists( $path ) ? $version . '.' . filemtime( $path ) : $version;
+	};
 	wp_enqueue_style( 'cal-ag-theme', get_stylesheet_uri(), array(), $version );
-	wp_enqueue_style( 'cal-ag-base', get_template_directory_uri() . '/styles.css', array(), $version );
-	wp_enqueue_style( 'cal-ag-refinement', get_template_directory_uri() . '/refinement.css', array( 'cal-ag-base' ), $version );
-	wp_enqueue_script( 'cal-ag-site', get_template_directory_uri() . '/site.js', array(), $version, true );
-	wp_enqueue_style( 'cal-ag-nav', get_template_directory_uri() . '/nav.css', array( 'cal-ag-refinement' ), $version );
+	wp_enqueue_style( 'cal-ag-base', get_template_directory_uri() . '/styles.css', array(), $ver( 'styles.css' ) );
+	wp_enqueue_style( 'cal-ag-refinement', get_template_directory_uri() . '/refinement.css', array( 'cal-ag-base' ), $ver( 'refinement.css' ) );
+	wp_enqueue_script( 'cal-ag-site', get_template_directory_uri() . '/site.js', array(), $ver( 'site.js' ), true );
+	wp_enqueue_style( 'cal-ag-nav', get_template_directory_uri() . '/nav.css', array( 'cal-ag-refinement' ), $ver( 'nav.css' ) );
 	if ( ! is_front_page() ) {
-		wp_enqueue_style( 'cal-ag-pages', get_template_directory_uri() . '/pages.css', array( 'cal-ag-refinement' ), $version );
+		wp_enqueue_style( 'cal-ag-pages', get_template_directory_uri() . '/pages.css', array( 'cal-ag-refinement' ), $ver( 'pages.css' ) );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'cal_ag_fieldcraft_assets' );
